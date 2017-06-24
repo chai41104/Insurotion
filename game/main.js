@@ -7,8 +7,8 @@ var cost = [];
 
 var cropSelect;
 var fieldSelect;
-
 var prices = {};
+
 function startGame() {
 	money = 10000;
 	year = 1;
@@ -20,9 +20,21 @@ function startGame() {
 
 	for(var i = 0; i < cropNames.length; ++i) {
 		cost[i] = 100;
+		prices.set(cropNames[i], []);
 	}
 
 	addData();
+}
+
+function getPrice(cropName, year) {
+	return prices.get(cropNames[i])[year-1];
+}
+
+function generatePrice() {
+	for(var i = 0; i < cropNames.length; ++i) {
+		var value = 100 + (Math.random() * 100);
+		prices.get(cropNames[i]).append(value);
+	}
 }
 
 function addData() {
@@ -44,7 +56,6 @@ function growCorp(i, cropName) {
 	var ele = $("#fieldCropId"+i).children()[0];
 	ele.className = 'info-box bg-green';
 	ele.childNodes[1].childNodes[0].innerHTML = cropName;
-
 
 	updatePage();
 }
@@ -69,6 +80,8 @@ function addEventSummary() {
 }
 
 function updateNewTurn() {
+	generatePrice();
+
 	addEventSummary();
 	addFinanceTable();
 
@@ -120,7 +133,7 @@ function addFinanceTable() {
 	text += addRowFinanceTable(" - cost of crops", sFromCrop);
 	text += addRowFinanceTable(" - cost of Insurance", sFromInsurance);
 
-	var profit = iFromCrop + iFromInsure + sFromCrop + sFromInsurance;
+	var profit = iFromCrop + iFromInsure;
 
 	text += addRowFinanceTable("<strong>Financial Summary</strong>", profit);
 
@@ -131,7 +144,16 @@ function addFinanceTable() {
 }
 
 function incomeFromCrop() {
-	return 100;
+	if(getEvent() != "Normal") return 0;
+	else {
+		var income = 0;
+		for(var i = 0; i < fields.length; ++i) {
+			if(fields[i] != "None") {
+				income += getPrice(fields[i], year);
+			}
+		}		
+		return income;
+	}
 }
 
 function incomeFromInsure() {
