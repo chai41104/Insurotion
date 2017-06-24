@@ -49,8 +49,29 @@ function growCorp(i, cropName) {
 	updatePage();
 }
 
+function getEvent() {
+	return "Normal";
+}
+
+function addEventSummary() {
+	var event = getEvent();
+
+	if(event == "Normal") {
+		var ele = $("#eventButton");
+		ele.html(event);
+		ele.attr("class", "btn btn-info");
+
+		ele = $("#eventText");
+		ele.html("Everything is fine. They are not disaster. The crop can be sold in a good price.");
+	}
+	// add more
+
+}
+
 function updateNewTurn() {
+	addEventSummary();
 	addFinanceTable();
+
   	$('#endYearModal').modal('toggle');
 	resetField();
   	updatePage();
@@ -81,7 +102,7 @@ function selectCrop(i) {
 }
 
 function addFinanceTable() {
-	
+
 	var text = "";
 	var profit = 0;
 
