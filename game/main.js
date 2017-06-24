@@ -50,8 +50,10 @@ function growCorp(i, cropName) {
 }
 
 function updateNewTurn() {
+	addFinanceTable();
+  	$('#endYearModal').modal('toggle');
 	resetField();
-	updatePage();
+  	updatePage();
 }
 
 function resetField() {
@@ -78,6 +80,56 @@ function selectCrop(i) {
 	fieldSelect = i;
 }
 
+function addFinanceTable() {
+	
+	var text = "";
+	var profit = 0;
+
+	var iFromCrop = incomeFromCrop();
+	var iFromInsure = incomeFromInsure();
+
+	text += addRowFinanceTable("<strong>Income</strong>", iFromCrop + iFromInsure);
+	text += addRowFinanceTable(" - Sell Crops", iFromCrop);
+	text += addRowFinanceTable(" - Claim From Insurance", iFromInsure);
+
+	var sFromCrop = spendingFromCrop();
+	var sFromInsurance = spendingFromInsure();
+
+	text += addRowFinanceTable("<strong>Spending</strong>", sFromCrop + sFromInsurance);
+	text += addRowFinanceTable(" - cost of crops", sFromCrop);
+	text += addRowFinanceTable(" - cost of Insurance", sFromInsurance);
+
+	var profit = iFromCrop + iFromInsure + sFromCrop + sFromInsurance;
+
+	text += addRowFinanceTable("<strong>Financial Summary</strong>", profit);
+
+	$("#financeTable").html(text);
+
+	money += profit;
+	year++;
+}
+
+function incomeFromCrop() {
+	return 100;
+}
+
+function incomeFromInsure() {
+	return 10;
+}
+
+function spendingFromCrop() {
+	return -10;
+}
+
+function spendingFromInsure() {
+	return -10;
+}
+
+function addRowFinanceTable(detail, money) {
+	if(money < 0) return "<tr><td>" +detail+ "</td><td>(£"+money+")</td></tr>";
+	else return "<tr><td>" +detail+ "</td><td>£"+money+"</td></tr>";	
+}
+
 $( "body" ).click(function( event ) {
   var elem = event.target;
   if(elem.hasAttribute( 'fieldid' )) {
@@ -89,8 +141,7 @@ $( "body" ).click(function( event ) {
   	$('#selectCropModal').modal('toggle');
   }
   else if(elem.hasAttribute( 'endYear' )) {
-  	console.log("trigger");
-  	$('#endYearModal').modal('toggle');
+  	updateNewTurn();
   }
 });
 
