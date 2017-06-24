@@ -22,7 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         page. However, you can choose any other skin. Make sure you
         apply the skin class to the body tag so the changes take effect. -->
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
-
+  <link rel="stylesheet" href="game/main.css">
+  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -223,15 +224,15 @@ desired effect
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-xs-6" endYear="endYear">
           <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>End Year!</h3>
-              <p>Click to prograss for the next year.</p>
+          <div class="small-box bg-red" endYear="endYear">
+            <div class="inner" endYear="endYear">
+              <h3 id="endYear">End Year!</h3>
+              <p id="endYear">Click to prograss for the next year.</p>
             </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+            <div class="icon" endYear="endYear">
+              <i class="ion ion-pie-graph" endYear="endYear"></i>
             </div>
           </div>
         </div>
@@ -351,6 +352,60 @@ desired effect
       <!-- /.tab-pane -->
     </div>
   </aside>
+
+  <div class="modal modal-success fade" id="selectCropModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Select Crops in grow</h4>
+        </div>
+        <div class="modal-body">
+          <table id="cropNameTable" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>Crop name</th>
+                  <th>Cost</th>
+                </tr>
+                </thead>
+                <tbody id="tableCrop">
+                <tr>
+                  <td>Trident</td>
+                  <td>Internet
+                    Explorer 4.0
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-outline">Save changes</button>
+        </div> -->
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <div class="modal modal-danger fade" id="endYearModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Financial Summary</h4>
+        </div>
+        <div class="modal-body">
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-outline">Save changes</button>
+        </div> -->
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
   immediately after the control sidebar -->
@@ -368,8 +423,12 @@ desired effect
 <script src="dist/js/adminlte.min.js"></script>
 
 <script src="game/main.js"></script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. -->
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
 </body>
 </html>
