@@ -283,9 +283,14 @@ $( "body" ).click(function( event ) {
   else if(elem.hasAttribute( 'readNews' )) {
   	$('#newsModal').modal('toggle');
   }
+  else if(elem.hasAttribute( 'insuranceBuy' )) {
+  	console.log("TTTT");
+  	$('#selectInsuranceModal').modal('toggle');
+  }
 });
 
 $( document ).ready(function() {
 	startGame();
 	$("#cropNameTable").DataTable();
+	$("#InsuranceTable").DataTable();
 });

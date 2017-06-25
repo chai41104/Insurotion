@@ -239,9 +239,12 @@ desired effect
         <!-- ./col -->
       </div>
       <!-- /.row -->
+      <div class="callout callout-info" insuranceBuy="buyinsurance">
+        <h4 insuranceBuy="buyinsurance">Click to buy insurance.</h4>
+      </div>
       <div class="callout callout-info">
         <h4>Grow Your Crop</h4>
-        Click on the field you want to grow your crop!
+        Click on the fields you want to grow your crop below!
       </div>
       <div class="row" id="cropFields">
         <div class="col-md-3 col-sm-6 col-xs-12">
@@ -353,6 +356,41 @@ desired effect
     </div>
   </aside>
 
+  <div class="modal modal-warning fade" id="selectInsuranceModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Select Insurance to Buy</h4>
+        </div>
+        <div class="modal-body">
+          <table id="InsuranceTable" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Insurance name</th>
+                <th>Cost</th>
+                <th>Check to Buy</th>
+              </tr>
+            </thead>
+            <tbody id="tableInsurance">
+              <tr>
+                <td></td>
+                <td></td>
+                <td><input type="checkbox" value=""></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-outline">Save changes</button>
+        </div> -->
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
   <div class="modal modal-success fade" id="selectCropModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -458,8 +496,8 @@ desired effect
     <!-- /.modal-dialog -->
   </div>
   <!-- /.modal -->
-
   
+
   
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
