@@ -10,12 +10,11 @@ var fieldSelect;
 var prices = new Map();
 
 var isSick = false;
-var isDisaster = "None";
+var isDisaster = "Normal";
 
 var sumCostCrop = 0;
 
 function setNewTurn() {
-	addNews();
 	addInsuranceTable();
 	resetField();
 
@@ -29,8 +28,9 @@ function startGame() {
 	prices = new Map();
 
 	isSick = false;
-	isDisaster = "None";
+	isDisaster = "Normal";
 
+	addNews();
 	setNewTurn();
 	updatePage();
 	
@@ -44,11 +44,12 @@ function startGame() {
 
 function updateNewTurn() {
 	generatePrice();
-
-	setNewTurn();
+	addNews();
 	
 	addEventSummary();
 	addFinanceTable();
+	
+	setNewTurn();
 	
   	$('#endYearModal').modal('toggle');
 
@@ -56,12 +57,12 @@ function updateNewTurn() {
 }
 
 function getPrice(cropName, year) {
-	return prices.get(cropNames[i])[year-1];
+	return prices.get(cropName)[year-1];
 }
 
 function generatePrice() {
 	for(var i = 0; i < cropNames.length; ++i) {
-		var value = 100 + Math.round(Math.random() * 10000) / 100.0;
+		var value = 100 + Math.round(Math.random() * 100);
 		prices.get(cropNames[i]).push(value);
 	}
 }
@@ -102,7 +103,7 @@ function getCondition() {
 		}
 	}
 	else {
-		isDisaster = false;
+		isDisaster = "Normal";
 		return writeNews("info", "info", "No disaster last year.", "Last year is a lovely day to grow your crop. Why not start to grow your crop.");
 	}
 }
@@ -170,7 +171,7 @@ function growCrop(i, cropName) {
 }
 
 function getEvent() {
-	return "Normal";
+	return isDisaster;
 }
 
 function addEventSummary() {
@@ -182,9 +183,16 @@ function addEventSummary() {
 		ele.attr("class", "btn btn-info");
 
 		ele = $("#eventText");
-		ele.html("Everything is fine. They are not disaster. The crop can be sold in a good price.");
+		ele.html("Everything was fine. There was not disaster. The crop can be sold in a good price.");
 	}
-	// add more
+	else {
+		var ele = $("#eventButton");
+		ele.html(event);
+		ele.attr("class", "btn btn-danger");
+
+		ele = $("#eventText");
+		ele.html("There was a " +event+ " disaster last year. No crop can be sold. If you buy insurance, you will get some money back.");
+	}
 
 }
 
@@ -214,7 +222,7 @@ function selectCrop(i) {
 
 function addFinanceTable() {
 
-	var costOfliving = 200;
+	var costOfliving = -200;
 
 	var text = "";
 	var profit = 0;
@@ -226,21 +234,21 @@ function addFinanceTable() {
 	text += addRowFinanceTable(" - Sell Crops", iFromCrop);
 	text += addRowFinanceTable(" - Claim From Insurance", iFromInsure);
 
-	var sFromCrop = spendingFromCrop();
+	var sFromCrop = -spendingFromCrop();
 	var sFromInsurance = spendingFromInsure();
 
-	text += addRowFinanceTable("<strong>Spending</strong>", sFromCrop + sFromInsurance);
+	text += addRowFinanceTable("<strong>Spending</strong>", sFromCrop + sFromInsurance + costOfliving);
 	text += addRowFinanceTable(" - cost of crops", sFromCrop);
 	text += addRowFinanceTable(" - cost of Insurance", sFromInsurance);
 	text += addRowFinanceTable(" - Living cost", costOfliving);
 
-	var profit = iFromCrop + iFromInsure - sFromInsurance - costOfliving - sFromCrop;
+	var profit = iFromCrop + iFromInsure + sFromInsurance + costOfliving + sFromCrop;
 
 	text += addRowFinanceTable("<strong>Financial Summary</strong>", profit);
 
 	$("#financeTable").html(text);
 
-	money += profit + sFromCrop;
+	money += profit - sFromCrop;
 	year++;
 }
 
@@ -275,7 +283,7 @@ function incomeFromCrop() {
 
 function incomeFromInsure() {
 	var money = 0;
-	if(isDisaster != "None") {
+	if(isDisaster != "Normal") {
 		if(isDisaster == "Drought" && $('#CBinsuranceDrought')[0].checked) money += 500;
 		else if(isDisaster == "Strom" && $('#CBinsuranceStrom')[0].checked) money += 500;
 	}
@@ -308,6 +316,7 @@ function triggerSuggest() {
 	$('#CBinsuranceDrought').prop('checked', true);
 	$('#CBinsuranceStrom').prop('checked', true);
 
+	$("#botSuggestText").empty();
 	$("#botSuggestText").append(writeNews("info", "info", "Suggest to buy all insurances!", "Our Machien Learning predicts to buy all insurance."));
 }
 
@@ -327,7 +336,8 @@ $( "body" ).click(function( event ) {
   else if(elem.hasAttribute( 'cropNameId' )) {
   	cropselect = elem.getAttribute( 'cropNameId' );
   	growCrop(fieldSelect, cropselect);
-  	$('#selectCropModal').modal('toggle');
+  	if(isSick) alert("You are sick. So, you can't work this year.");
+  	else $('#selectCropModal').modal('toggle');
   }
   else if(elem.hasAttribute( 'endYear' )) {
   	updateNewTurn();
