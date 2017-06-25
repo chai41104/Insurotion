@@ -162,7 +162,9 @@ function growCrop(i, cropName) {
 	sumCostCrop += cost[cropNames.indexOf(cropName)];
 	var ele = $("#fieldCropId"+i).children()[0];
 	ele.className = 'info-box bg-green';
+	
 	ele.childNodes[1].childNodes[0].innerHTML = cropName;
+	ele.childNodes[0].childNodes[0].className="fa fa-leaf";
 
 	updatePage();
 }
