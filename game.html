@@ -211,15 +211,15 @@ desired effect
           </div>
         </div>
         <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-xs-6" readNews="readNews">
           <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>Read News</h3>
-              <p>Display the Prediction</p>
+          <div class="small-box bg-yellow" readNews="readNews">
+            <div class="inner" readNews="readNews">
+              <h3 readNews="readNews">Read News</h3>
+              <p readNews="readNews">Display the Prediction</p>
             </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
+            <div class="icon" readNews="readNews">
+              <i class="ion ion-person-add" readNews="readNews"></i>
             </div>
           </div>
         </div>
@@ -387,6 +387,31 @@ desired effect
     </div>
     <!-- /.modal-dialog -->
   </div>
+  <!-- /.modal -->
+  <div class="modal modal-info fade" id="newsModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">News!</h4>
+        </div>
+        <div class="modal-body" id="displayNews">
+          <div class="alert alert-info alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <h4><i class="icon fa fa-info"></i> Alert!</h4>
+            Test Here!
+          </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-outline">Save changes</button>
+        </div> -->
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
   <div class="modal modal-danger fade" id="endYearModal">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -417,13 +442,6 @@ desired effect
                   </tr>
                 </thead>
                 <tbody id="financeTable">
-                  <!-- <tr>
-                    <td>1</td>
-                    <td>Call of Duty</td>
-                    <td>455-981-221</td>
-                    <td>El snort testosterone trophy driving gloves handsome</td>
-                    <td>$64.50</td>
-                     </tr> -->
                 </tbody>
               </table>
             </div>
@@ -440,6 +458,9 @@ desired effect
     <!-- /.modal-dialog -->
   </div>
   <!-- /.modal -->
+
+  
+  
   <!-- /.control-sidebar -->
   <!-- Add the sidebar's background. This div must be placed
   immediately after the control sidebar -->

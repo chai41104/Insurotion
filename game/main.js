@@ -7,14 +7,21 @@ var cost = [];
 
 var cropSelect;
 var fieldSelect;
-var prices = {};
+var prices = new Map();
+
+var isSick = false;
+var isDisaster = "None";
 
 function startGame() {
 	money = 10000;
 	year = 1;
 	fields = [];
-	prices = {};
+	prices = new Map();
 
+	isSick = false;
+	isDisaster = "None";
+
+	addNews();
 	resetField();
 	updatePage();
 
@@ -32,8 +39,8 @@ function getPrice(cropName, year) {
 
 function generatePrice() {
 	for(var i = 0; i < cropNames.length; ++i) {
-		var value = 100 + (Math.random() * 100);
-		prices.get(cropNames[i]).append(value);
+		var value = 100 + Math.round(Math.random() * 10000) / 100.0;
+		prices.get(cropNames[i]).push(value);
 	}
 }
 
@@ -48,6 +55,83 @@ function addData() {
 function updatePage() {
 	$("#displayYear").html(year);
 	$("#displayMoney").html("<sup style='font-size: 20px'>£</sup>" + money);
+}
+
+function getYourStatus() {
+	if(getRandomInt(0, 3) == 0 && year != 1) {
+		isSick = true;
+		return writeNews("danger", "ban", "You are sick.", "You are not feeling well to work. So, you have to stay in hospital for this year.");
+	}
+	else {
+		isSick = false;
+		return writeNews("info", "info", "You are strong and ready to work.", "You are strong. So, you really want to work now.");
+	}
+}
+
+function getCondition() {
+	if(getRandomInt(0, 1) == 0 && year != 1) {
+		if (getRandomInt(0, 1) == 0) {
+			isDisaster = "Drought";
+			return writeNews("danger", "ban", "Drought last year.", "All crops are dead and nothing can be sold. If you buy insurance for Drought. They will pay the money for you.");
+		}
+		else if (getRandomInt(0, 1) == 0) {
+			isDisaster = "Storm";
+			return writeNews("danger", "ban", "Big Storm last year.", "All crops are damaged and nothing can be sold. If you buy insurance for Storm. They will pay the money for you.");
+		}
+	}
+	else {
+		isDisaster = false;
+		return writeNews("info", "info", "No disaster last year.", "Last year is a lovely day to grow your crop. Why not start to grow your crop.");
+	}
+}
+
+function getPrediction() {
+	if(getRandomInt(0, 1) == 0 && year != 1) {
+		if (getRandomInt(0, 1) == 0) {
+			return writeNews("warning", "warning", "Drought may happen this year.", "Drought may happen this year. You should buy insurance.");
+		}
+		else if (getRandomInt(0, 1) == 0) {
+			return writeNews("warning", "warning", "Big Storm may happen this year.", "Big Storm may happen this year. You should buy insurance.");
+		}
+	}
+	else {
+		return writeNews("info", "info", "No disaster may happen this year.", "No disaster is expected but there is no garuntee at all. You should buy insurance.");
+	}
+}
+
+function getCropPrediction(cropName) {
+	if(getRandomInt(0, 1) == 0) {
+		if (getRandomInt(0, 1) == 0) {
+			return writeNews("warning", "warning", "Price of " +cropName+ " will be low this year." , "It is a prediction that the price of " +cropName+ " will be low. It is not recommend to grow.");
+		}
+		else if (getRandomInt(0, 1) == 0) {
+			return writeNews("success", "check", "Price of " +cropName+ " will be high this year." , "It is a prediction that the price of " +cropName+ " will be high. It is recommend to grow.");
+		}
+	}
+	else {
+		return writeNews("info", "info", "Price of " +cropName+ " will be stable this year." , "It is a prediction that the price of " +cropName+ " will be stable. It is not high or low.");
+	}
+}
+
+function addNews() {
+	var $displayNews = $("#displayNews");
+
+	$displayNews.empty();
+
+	$displayNews.append(getYourStatus());
+	$displayNews.append(getCondition());
+
+	$displayNews.append(getPrediction());
+
+	for(var i = 0; i < cropNames.length; ++i) {
+		$displayNews.append(getCropPrediction(cropNames[i]));
+	}
+}
+
+function writeNews(type, sign, header, text) {
+	return '<div class="alert alert-'+ type +' alert-dismissible">' +
+            '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+            '<h4><i class="icon fa fa-' +sign+ '"></i>'+ header+ '</h4>' + text + '</div>';
 }
 
 function growCorp(i, cropName) {
@@ -81,6 +165,8 @@ function addEventSummary() {
 
 function updateNewTurn() {
 	generatePrice();
+
+	addNews();
 
 	addEventSummary();
 	addFinanceTable();
@@ -173,6 +259,14 @@ function addRowFinanceTable(detail, money) {
 	else return "<tr><td>" +detail+ "</td><td>£"+money+"</td></tr>";	
 }
 
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 $( "body" ).click(function( event ) {
   var elem = event.target;
   if(elem.hasAttribute( 'fieldid' )) {
@@ -185,6 +279,9 @@ $( "body" ).click(function( event ) {
   }
   else if(elem.hasAttribute( 'endYear' )) {
   	updateNewTurn();
+  }
+  else if(elem.hasAttribute( 'readNews' )) {
+  	$('#newsModal').modal('toggle');
   }
 });
 
