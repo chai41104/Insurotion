@@ -377,14 +377,17 @@ desired effect
               <tr>
                 <td></td>
                 <td></td>
-                <td><input type="checkbox" value=""></td>
+                <td><input type="checkbox" value="" id="CBinsurance"></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <!-- <div class="modal-footer">
-          <button type="button" class="btn btn-outline">Save changes</button>
-        </div> -->
+        <div id="botSuggestText">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success btn-outline pull-left" onclick="triggerSuggest();">What should I buy?</button>
+          <button type="button" data-dismiss="modal" class="btn btn-outline">Buy</button>
+        </div>
       </div>
       <!-- /.modal-content -->
     </div>

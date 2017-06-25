@@ -12,6 +12,16 @@ var prices = new Map();
 var isSick = false;
 var isDisaster = "None";
 
+var sumCostCrop = 0;
+
+function setNewTurn() {
+	addNews();
+	addInsuranceTable();
+	resetField();
+
+	sumCostCrop = 0;
+}
+
 function startGame() {
 	money = 10000;
 	year = 1;
@@ -21,16 +31,28 @@ function startGame() {
 	isSick = false;
 	isDisaster = "None";
 
-	addNews();
-	resetField();
+	setNewTurn();
 	updatePage();
-
+	
 	for(var i = 0; i < cropNames.length; ++i) {
 		cost[i] = 100;
 		prices.set(cropNames[i], []);
 	}
 
 	addData();
+}
+
+function updateNewTurn() {
+	generatePrice();
+
+	setNewTurn();
+	
+	addEventSummary();
+	addFinanceTable();
+	
+  	$('#endYearModal').modal('toggle');
+
+  	updatePage();
 }
 
 function getPrice(cropName, year) {
@@ -134,9 +156,10 @@ function writeNews(type, sign, header, text) {
             '<h4><i class="icon fa fa-' +sign+ '"></i>'+ header+ '</h4>' + text + '</div>';
 }
 
-function growCorp(i, cropName) {
+function growCrop(i, cropName) {
 	fields[i] = cropName;
 	money -= cost[cropNames.indexOf(cropName)];
+	sumCostCrop += cost[cropNames.indexOf(cropName)];
 	var ele = $("#fieldCropId"+i).children()[0];
 	ele.className = 'info-box bg-green';
 	ele.childNodes[1].childNodes[0].innerHTML = cropName;
@@ -161,19 +184,6 @@ function addEventSummary() {
 	}
 	// add more
 
-}
-
-function updateNewTurn() {
-	generatePrice();
-
-	addNews();
-
-	addEventSummary();
-	addFinanceTable();
-
-  	$('#endYearModal').modal('toggle');
-	resetField();
-  	updatePage();
 }
 
 function resetField() {
@@ -202,6 +212,8 @@ function selectCrop(i) {
 
 function addFinanceTable() {
 
+	var costOfliving = 200;
+
 	var text = "";
 	var profit = 0;
 
@@ -218,15 +230,32 @@ function addFinanceTable() {
 	text += addRowFinanceTable("<strong>Spending</strong>", sFromCrop + sFromInsurance);
 	text += addRowFinanceTable(" - cost of crops", sFromCrop);
 	text += addRowFinanceTable(" - cost of Insurance", sFromInsurance);
+	text += addRowFinanceTable(" - Living cost", costOfliving);
 
-	var profit = iFromCrop + iFromInsure;
+	var profit = iFromCrop + iFromInsure - sFromInsurance - costOfliving - sFromCrop;
 
 	text += addRowFinanceTable("<strong>Financial Summary</strong>", profit);
 
 	$("#financeTable").html(text);
 
-	money += profit;
+	money += profit + sFromCrop;
 	year++;
+}
+
+function addInsuranceRow(text, cost, id) {
+	return '<tr><td>' +text+ '</td><td>' +cost+ '</td><td><input type="checkbox" value="" id="CBinsurance'+id+'"></td></tr>';
+}
+
+function addInsuranceTable() {
+	var $tableInsurance = $("#tableInsurance");
+
+	$tableInsurance.empty();
+
+	$tableInsurance.append(addInsuranceRow("Health Insurance", 100, "Health"));
+	$tableInsurance.append(addInsuranceRow("Drought Insurance", 100, "Drought"));
+	$tableInsurance.append(addInsuranceRow("Strom Insurance", 100, "Strom"));
+
+	$("#botSuggestText").empty();
 }
 
 function incomeFromCrop() {
@@ -243,20 +272,41 @@ function incomeFromCrop() {
 }
 
 function incomeFromInsure() {
-	return 10;
+	var money = 0;
+	if(isDisaster != "None") {
+		if(isDisaster == "Drought" && $('#CBinsuranceDrought')[0].checked) money += 500;
+		else if(isDisaster == "Strom" && $('#CBinsuranceStrom')[0].checked) money += 500;
+	}
+	if(isSick == true && $('#CBinsuranceHealth')[0].checked ) money += 500;
+
+	return money;
 }
 
 function spendingFromCrop() {
-	return -10;
+	return sumCostCrop;
 }
 
 function spendingFromInsure() {
-	return -10;
+	var cost = 0;
+	
+	if($('#CBinsuranceHealth')[0].checked == true) cost -= 100;
+	if($('#CBinsuranceDrought')[0].checked == true) cost -= 100;
+	if($('#CBinsuranceStrom')[0].checked == true) cost -= 100;
+	
+	return cost;
 }
 
 function addRowFinanceTable(detail, money) {
 	if(money < 0) return "<tr><td>" +detail+ "</td><td>(£"+money+")</td></tr>";
 	else return "<tr><td>" +detail+ "</td><td>£"+money+"</td></tr>";	
+}
+
+function triggerSuggest() {
+	$('#CBinsuranceHealth').prop('checked', true);
+	$('#CBinsuranceDrought').prop('checked', true);
+	$('#CBinsuranceStrom').prop('checked', true);
+
+	$("#botSuggestText").append(writeNews("info", "info", "Suggest to buy all insurances!", "Our Machien Learning predicts to buy all insurance."));
 }
 
 /**
@@ -274,7 +324,7 @@ $( "body" ).click(function( event ) {
   }
   else if(elem.hasAttribute( 'cropNameId' )) {
   	cropselect = elem.getAttribute( 'cropNameId' );
-  	growCorp(fieldSelect, cropselect);
+  	growCrop(fieldSelect, cropselect);
   	$('#selectCropModal').modal('toggle');
   }
   else if(elem.hasAttribute( 'endYear' )) {
@@ -284,7 +334,6 @@ $( "body" ).click(function( event ) {
   	$('#newsModal').modal('toggle');
   }
   else if(elem.hasAttribute( 'insuranceBuy' )) {
-  	console.log("TTTT");
   	$('#selectInsuranceModal').modal('toggle');
   }
 });
