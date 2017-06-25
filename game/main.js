@@ -62,7 +62,7 @@ function getPrice(cropName, year) {
 
 function generatePrice() {
 	for(var i = 0; i < cropNames.length; ++i) {
-		var value = 100 + Math.round(Math.random() * 100);
+		var value = 200 + Math.round(Math.random() * 100);
 		prices.get(cropNames[i]).push(value);
 	}
 }
