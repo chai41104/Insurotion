@@ -14,6 +14,8 @@ var isDisaster = "Normal";
 
 var sumCostCrop = 0;
 
+var moneyHistory = [];
+
 function setNewTurn() {
 	addInsuranceTable();
 	resetField();
@@ -30,6 +32,8 @@ function startGame() {
 	isSick = false;
 	isDisaster = "Normal";
 
+	moneyHistory.push([money, year]);
+
 	addNews();
 	setNewTurn();
 	updatePage();
@@ -40,6 +44,9 @@ function startGame() {
 	}
 
 	addData();
+
+	updateMoneyGraph();
+	updatePricesGraph();
 }
 
 function updateNewTurn() {
@@ -54,6 +61,9 @@ function updateNewTurn() {
   	$('#endYearModal').modal('toggle');
 
   	updatePage();
+  	
+  	updateMoneyGraph();
+	updatePricesGraph();
 }
 
 function getPrice(cropName, year) {
@@ -249,6 +259,9 @@ function addFinanceTable() {
 	$("#financeTable").html(text);
 
 	money += profit - sFromCrop;
+
+	moneyHistory.push([money, year]);
+
 	year++;
 }
 
@@ -350,8 +363,95 @@ $( "body" ).click(function( event ) {
   }
 });
 
+function updateMoneyGraph() {
+	var line_data1 = {
+      data: moneyHistory,
+      color: "#3c8dbc"
+    };
+    // var line_data2 = {
+    //   data: cos,
+    //   color: "#00c0ef"
+    // };
+    $.plot("#money-chart", [line_data1], {
+      grid: {
+        hoverable: true,
+        borderColor: "#f3f3f3",
+        borderWidth: 1,
+        tickColor: "#f3f3f3"
+      },
+      series: {
+        shadowSize: 0,
+        lines: {
+          show: true
+        },
+        points: {
+          show: true
+        }
+      },
+      lines: {
+        fill: false,
+        color: ["#3c8dbc", "#f56954"]
+      },
+      yaxis: {
+        show: true,
+      },
+      xaxis: {
+        show: true
+      }
+    });
+}
+
+function updatePricesGraph() {
+
+	var data = [];
+	var info = [];
+	for(var i = 0; i < cropNames.length; ++i) {
+		
+		info = []
+		for (var j = -14; j < 0; j += 1) {
+	      info.push([j, 200 + Math.round(Math.random() * 100)]);
+	    }
+
+	    var line_data = {
+	      data: info,
+	      color: "#3c8dbc"
+	    };
+
+	    data.push(line_data);
+	}
+ 
+    $.plot("#prices-chart", data, {
+      grid: {
+        hoverable: true,
+        borderColor: "#f3f3f3",
+        borderWidth: 1,
+        tickColor: "#f3f3f3"
+      },
+      series: {
+        shadowSize: 0,
+        lines: {
+          show: true
+        },
+        points: {
+          show: true
+        }
+      },
+      lines: {
+        fill: false,
+        color: ["#3c8dbc"]
+      },
+      yaxis: {
+        show: true,
+      },
+      xaxis: {
+        show: true
+      }
+    });
+}
+
 $( document ).ready(function() {
 	startGame();
 	$("#cropNameTable").DataTable();
 	$("#InsuranceTable").DataTable();
+
 });

@@ -137,8 +137,8 @@ desired effect
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Game Page</span></a></li>
-        <li><a href="register.html"><i class="fa fa-link"></i> <span>Register Your Interest</span></a></li>
+        <li><a href="game.html"><i class="fa fa-link"></i> <span>Game Page</span></a></li>
+        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Register Your Interest</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -150,118 +150,51 @@ desired effect
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Build You Business.
+        Fill the form below.
       </h1>
     </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
-    <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3 id="displayYear">#</h3>
-              <p>Year</p>
+      <!-- Small boxes (Stat box) -->
+      <div class="col-md-12">
+        <!-- Horizontal Form -->
+          <div class="box box-info">
+            <div class="box-header with-border">
+              <h3 class="box-title">Please fill the form and we will contact you afterwards!</h3>
             </div>
-            <div class="icon">
-              <i class="fa fa-calendar"></i>
-            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form class="form-horizontal">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Full name</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="" placeholder="name">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-10">
+                    <input type="email" class="form-control" id="" placeholder="Email">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-2 control-label">Telephone Number</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" id="" placeholder="name">
+                  </div>
+                </div>
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button type="submit" class="btn btn-info pull-right" onclick="alert('Thank you for your details. We will contact you afterwards.');">register</button>
+              </div>
+              <!-- /.box-footer -->
+            </form>
           </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green" onclick="">
-            <div class="inner">
-              <h3 id="displayMoney"><sup style="font-size: 20px">£</sup>#</h3>
-              <p>Money</p>
-            </div>
-            <div class="icon">
-              <i class="fa fa-money"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6" readNews="readNews">
-          <!-- small box -->
-          <div class="small-box bg-yellow" readNews="readNews">
-            <div class="inner" readNews="readNews">
-              <h3 readNews="readNews">Read News</h3>
-              <p readNews="readNews">Display the Prediction</p>
-            </div>
-            <div class="icon" readNews="readNews">
-              <i class="fa fa-newspaper-o" readNews="readNews"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6" endYear="endYear">
-          <!-- small box -->
-          <div class="small-box bg-red" endYear="endYear">
-            <div class="inner" endYear="endYear">
-              <h3 endYear="endYear">End Year!</h3>
-              <p endYear="endYear">Click to prograss for the next year.</p>
-            </div>
-            <div class="icon" endYear="endYear">
-              <i class="fa fa-hourglass" endYear="endYear"></i>
-            </div>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-      <div class="callout callout-info" insuranceBuy="buyinsurance">
-        <h4 insuranceBuy="buyinsurance">Click to buy insurance.</h4>
-      </div>
-      <div class="callout callout-info">
-        <h4>Grow Your Crop</h4>
-        Click on the fields you want to grow your crop below!
-      </div>
-      <div class="row" id="cropFields">
-        <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box bg-green">
-            <span class="info-box-icon" onclick="alert('Hi');"><i class="fa fa-bookmark-o"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Bookmarks</span>
-            </div>
-            <!-- /.info-box-content -->
-          </div>
-          <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <!-- <div class="col-md-3 col-sm-6 col-xs-12">
-          <div class="info-box bg-yellow">
-            <span class="info-box-icon" onclick="alert('Hi');"><i class="fa fa-bookmark-o"></i></span>
-
-            <div class="info-box-content">
-              <span class="info-box-text">Bookmarks</span>
-            </div> -->
-            <!-- /.info-box-content -->
-          <!-- </div> -->
-          <!-- /.info-box -->
-        <!-- </div> -->
-      </div>
-      <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="nav-tabs-custom">
-            <!-- Tabs within a box -->
-            <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#money-chart" data-toggle="tab">Money</a></li>
-              <li><a href="#prices-chart" data-toggle="tab">Prices</a></li>
-              <li class="pull-left header"><i class="fa fa-line-chart"></i> History</li>
-            </ul>
-            <div class="tab-content no-padding">
-              <!-- Morris chart - Sales -->
-              <div class="chart tab-pane active" id="money-chart" style="position: relative; height: 300px;"></div>
-              <div class="chart tab-pane" id="prices-chart" style="position: relative; height: 300px;"></div>
-            </div>
-          </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
+          <!-- /.box -->
       </div>
       <!-- /.row -->
     </section>
